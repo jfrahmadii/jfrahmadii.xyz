@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+
+# Raw hourly Parquet partitions — large and fully regenerable via the ETL
+# (run: python Extract_Transform_data.py --aggregate-after).
+# The aggregated Fact_Generation_ON_*.parquet/.csv are kept in the repo.
+parquet/
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Local agent / editor config (preview server, etc.)
+.claude/

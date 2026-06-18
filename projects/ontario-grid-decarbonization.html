@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ontario's Grid: Clean, but Drifting — Jafar Ahmadi</title>
+<meta name="description" content="End-to-end analytics project: real hourly IESO generation data, an ETL to Parquet, a star-schema model, and dashboards tracking Ontario's electricity decarbonization. Emissions-free share has slipped from 93% to 80% as natural gas tripled." />
+<meta property="og:title" content="Ontario's Grid: Clean, but Drifting" />
+<meta property="og:description" content="Tracking Ontario's electricity decarbonization from raw IESO data to a decision-ready dashboard." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://jfrahmadii.xyz/projects/ontario-grid-decarbonization.html" />
+<link rel="canonical" href="https://jfrahmadii.xyz/projects/ontario-grid-decarbonization.html" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d9488'/%3E%3Cpath d='M18 6l-9 12h6l-2 8 9-12h-6z' fill='white'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="../assets/css/site.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span class="dot">J</span>
+      <span>jeff<span style="color:var(--accent-ink)">.</span>analytics</span>
+    </a>
+    <nav class="nav-links">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about" class="hide-sm">About</a>
+      <a href="mailto:jfrahmadii@gmail.com">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ PROJECT HERO ============ -->
+<section class="proj-hero">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="../index.html">Home</a> → <a href="../index.html#projects">Projects</a> → Ontario Grid Decarbonization</div>
+    <p class="eyebrow">Energy &amp; Sustainability · Data Analytics</p>
+    <h1>Ontario's Grid: Clean, but Drifting</h1>
+    <p class="dek">
+      One of North America's cleanest electricity grids is quietly getting dirtier.
+      I built an end-to-end pipeline — real hourly IESO data to a decision-ready
+      dashboard — to measure exactly how much, and what's driving it.
+    </p>
+    <div class="proj-meta">
+      <div class="item"><div class="k">Role</div><div class="v">Solo — end to end</div></div>
+      <div class="item"><div class="k">Stack</div><div class="v">Python · Power BI · Fabric</div></div>
+      <div class="item"><div class="k">Data</div><div class="v">IESO hourly, 2019–present</div></div>
+      <div class="item"><div class="k">Grain</div><div class="v">~85 months · 191 generators</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OVERVIEW ============ -->
+<section class="block">
+  <div class="wrap-narrow prose">
+    <h2>The question</h2>
+    <p class="lead-in">
+      Ontario phased out coal in 2014 and built a grid that runs mostly on nuclear and
+      hydro. So is it still decarbonizing — or has it started to backslide?
+    </p>
+    <div class="callout">
+      <b>The story in five seconds:</b> Ontario still runs one of North America's
+      cleanest grids — but its emissions-free share has slipped from
+      <b>93.2% (2020)</b> to <b>80.1% (2025)</b>. Natural-gas generation has
+      <b>tripled</b> (10.1 → 32.2 TWh) while nuclear dipped during refurbishment,
+      and renewables held roughly flat near a third of supply.
+    </div>
+  </div>
+</section>
+
+<!-- ============ LIVE DASHBOARD (centerpiece) ============ -->
+<section class="block" style="padding-top:8px">
+  <div class="wrap">
+    <div class="dashboard">
+      <p class="d-eyebrow">Canada · Electricity Decarbonization Tracker</p>
+      <h3 class="d-title">Ontario transmission-connected generation</h3>
+      <p class="d-sub">Generation mix &amp; carbon trajectory · 2019–2026 · Source: IESO Generator Output Capability</p>
+
+      <div class="kpis">
+        <div class="kpi"><div class="label">Total generation (2025)</div><div class="val">162.4 TWh</div><div class="delta up">▲ +10.7% vs 2020</div></div>
+        <div class="kpi"><div class="label">Emissions-free share</div><div class="val">80.1%</div><div class="delta up">▼ 13.1 pts vs 2020 (93.2%)</div></div>
+        <div class="kpi"><div class="label">Renewable share</div><div class="val">32.1%</div><div class="delta flat">≈ flat vs 2020 (33.5%)</div></div>
+        <div class="kpi"><div class="label">Natural-gas generation</div><div class="val">32.2 TWh</div><div class="delta up">▲ 3.2× vs 2020 (10.1 TWh)</div></div>
+      </div>
+
+      <div class="d-grid">
+        <div class="d-card full">
+          <h4>Monthly generation mix</h4>
+          <p class="note">Every month, May 2019 → present (GWh, stacked). Seasonal nuclear refuelling dips and the steady rise of the gas wedge are both visible.</p>
+          <div class="chartbox tall"><canvas id="mixMonthly"></canvas></div>
+        </div>
+        <div class="d-card full">
+          <h4>Annual generation mix</h4>
+          <p class="note">Full calendar years (2020–2025). Nuclear + hydro carry the system; note gas climbing every year since 2021.</p>
+          <div class="chartbox"><canvas id="mixAnnual"></canvas></div>
+        </div>
+        <div class="d-card">
+          <h4>Emissions-free share of generation</h4>
+          <p class="note">Nuclear + hydro + wind + solar + bioenergy, as % of total.</p>
+          <div class="chartbox"><canvas id="clean"></canvas></div>
+        </div>
+        <div class="d-card">
+          <h4>The substitution: gas up, nuclear down</h4>
+          <p class="note">As nuclear units enter refurbishment, gas fills the gap (TWh).</p>
+          <div class="chartbox"><canvas id="sub"></canvas></div>
+        </div>
+      </div>
+
+      <div class="d-foot">
+        Charts render from <code style="color:#cfe3ff">assets/js/ontario-data.js</code>, generated directly
+        from the same star-schema fact tables that feed the Power BI model — the site numbers can't drift from the pipeline.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW I BUILT IT ============ -->
+<section class="block">
+  <div class="wrap-narrow prose">
+    <h2>How I built it</h2>
+    <p>
+      The headline is only worth as much as the data behind it, so most of the work
+      was upstream of the charts. The pipeline runs from the original publisher all
+      the way to the model — no hand-edited spreadsheets in between.
+    </p>
+
+    <div class="pipeline">
+      <div class="step"><div class="n">1</div><h4>Extract</h4><p>Incrementally download IESO monthly Generator Output Capability CSVs (hourly, per generator). Only re-fetch the open month — closed months are immutable.</p></div>
+      <div class="step"><div class="n">2</div><h4>Transform</h4><p>Skip comment lines, unpivot Hour 1–24 to long form, pivot measurements to columns, attach DST-safe local timestamps, write Hive-partitioned Parquet.</p></div>
+      <div class="step"><div class="n">3</div><h4>Model</h4><p>Roll hourly output up to province × fuel × period GWh and load a star schema: Date, Province, Fuel, Generator dims around generation &amp; emissions facts.</p></div>
+      <div class="step"><div class="n">4</div><h4>Visualize</h4><p>DAX measures for renewable share, grid intensity and YoY change in Power BI / Fabric; this page mirrors the model in Chart.js.</p></div>
+    </div>
+
+    <h3>The data model</h3>
+    <p>
+      Generation is keyed to a year-end date, a province, and a fuel type, with a
+      generator dimension for plant-level drill-down. Renewable and emitting flags
+      live on the fuel dimension so a single measure can switch between
+      "renewable" and "emissions-free":
+    </p>
+    <pre class="code"><span class="c">-- emissions-free = everything except Natural Gas and the mixed "Other" category</span>
+Total Generation (GWh) = <span class="k">SUM</span> ( Fact_Generation[Generation_GWh] )
+
+Renewable Share % =
+    <span class="k">DIVIDE</span> (
+        <span class="k">CALCULATE</span> ( [Total Generation (GWh)], Dim_FuelType[IsRenewable] = 1 ),
+        [Total Generation (GWh)]
+    )
+
+YoY Δ Renewable Share =
+    [Renewable Share %]
+  - <span class="k">CALCULATE</span> ( [Renewable Share %], <span class="k">DATEADD</span> ( Dim_Date[Date], -1, <span class="k">YEAR</span> ) )</pre>
+  </div>
+</section>
+
+<!-- ============ VALIDATION ============ -->
+<section class="block">
+  <div class="wrap-narrow prose">
+    <h2>Validation &amp; rigour</h2>
+    <p>
+      Public CSVs are messy in ways that fail silently. Two real bugs only surfaced
+      because I validated the loader against an actual April-2025 file instead of
+      trusting that it "looked right":
+    </p>
+    <ul>
+      <li><strong>Column shift.</strong> Data rows carry a trailing comma (29 fields) but the header has 28, so pandas promoted the first column to the index and shifted every field left by one — corrupting the whole table. Fixed with <code class="inline">index_col=False</code>.</li>
+      <li><strong>String aggregation.</strong> Offline units leave blank/whitespace hour cells, so <code class="inline">output_mw</code> loaded as text and would <em>concatenate</em> instead of sum. Fixed by coercing to numeric.</li>
+    </ul>
+
+    <h3>Reconciliation: IESO grid-connected vs CER provincial total</h3>
+    <p>
+      A pipeline you can't reconcile is a pipeline you can't trust. The IESO feed
+      covers <strong>transmission-connected</strong> generators only, so it runs a few
+      percent below the Canada Energy Regulator's province-wide total — exactly the
+      gap you'd expect from embedded rooftop solar and small hydro:
+    </p>
+    <div class="table-wrap">
+      <table class="data">
+        <thead><tr><th>Year</th><th class="num">IESO grid-connected (TWh)</th><th class="num">CER total (TWh)</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>2019</td><td class="num partial">98.1</td><td class="num">—</td><td class="partial">partial — feed starts May 2019</td></tr>
+          <tr><td>2020</td><td class="num">146.8</td><td class="num">—</td><td></td></tr>
+          <tr><td>2021</td><td class="num">141.9</td><td class="num">148.3</td><td>gap ≈ 6.4 TWh (4.3%) = embedded generation</td></tr>
+          <tr><td>2022</td><td class="num">146.4</td><td class="num">—</td><td></td></tr>
+          <tr><td>2023</td><td class="num">148.6</td><td class="num">—</td><td></td></tr>
+          <tr><td>2024</td><td class="num">156.6</td><td class="num">—</td><td>nuclear 51% / hydro 24% / gas 16% / wind 8.5%</td></tr>
+          <tr><td>2025</td><td class="num">162.4</td><td class="num">—</td><td>first year "Other" appears (178 GWh)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout accent">
+      <b>Why that gap is a feature, not a bug:</b> CER reports ~2,171 MW of
+      distribution-connected solar in Ontario vs only 478 MW transmission-connected,
+      so IESO structurally under-counts solar. The honest label is
+      <b>"transmission-connected generation (IESO)"</b> — the right basis for the
+      <i>grid mix</i> and the decarbonization story; for absolute provincial totals, cite CER.
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCOPE & SOURCES ============ -->
+<section class="block">
+  <div class="wrap-narrow prose">
+    <h2>Scope &amp; sources</h2>
+    <p class="sources">
+      <strong style="color:var(--ink)">Method:</strong> IESO Generator Output Capability,
+      transmission-connected generators only (excludes embedded/distribution-connected
+      solar &amp; small hydro — ~4% of the provincial total per CER). Annual GWh = Σ hourly output.
+      Grid carbon intensity (ECCC NIR): 220 g/kWh (2005) → 35 g/kWh (2022).
+      <br /><br />
+      <strong style="color:var(--ink)">Sources:</strong>
+      <a href="https://reports-public.ieso.ca/public/GenOutputCapabilityMonth/" target="_blank" rel="noopener">IESO Generator Output Capability</a> ·
+      <a href="https://www.cer-rec.gc.ca/en/data-analysis/energy-markets/province-territory-energy-profiles/ontario.html" target="_blank" rel="noopener">CER Ontario Energy Profile</a> ·
+      <a href="https://www.canada.ca/en/environment-climate-change/services/climate-change/greenhouse-gas-emissions/inventory.html" target="_blank" rel="noopener">ECCC National Inventory Report</a>
+    </p>
+    <div class="cta" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:26px">
+      <!-- EDIT: point this at the public GitHub repo once it's pushed -->
+      <a class="btn btn-primary" href="https://github.com/jfrahmadii" target="_blank" rel="noopener">View the code on GitHub →</a>
+      <a class="btn btn-ghost" href="../index.html#projects">← Back to projects</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <div>© <span id="year"></span> Jafar Ahmadi · Data from IESO, CER &amp; ECCC.</div>
+    <div class="social">
+      <a href="mailto:jfrahmadii@gmail.com">Email</a>
+      <a href="https://github.com/jfrahmadii" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/js/ontario-data.js"></script>
+<script src="../assets/js/ontario-charts.js"></script>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

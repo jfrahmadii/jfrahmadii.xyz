@@ -1,0 +1,10 @@
+FuelKey,FuelType,Category,IsRenewable,IsEmitting
+NUCLEAR,Nuclear,Non-emitting,0,0
+HYDRO,Hydro,Renewable,1,0
+WIND,Wind,Renewable,1,0
+SOLAR,Solar,Renewable,1,0
+BIOFUEL,Bioenergy,Renewable,1,1
+GAS,Natural Gas,Fossil,0,1
+COA,Coal,Fossil,0,1
+OIL,Oil/Other,Fossil,0,1
+OTHER,Other,Other,0,1
