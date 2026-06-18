@@ -1,13 +1,14 @@
 # jfrahmadii.xyz — Data Analytics Portfolio
 
-Personal portfolio site (static HTML/CSS/JS, deployed on **GitHub Pages** at
-**[jfrahmadii.xyz](https://jfrahmadii.xyz)**), plus the full data project behind its
-first case study. New projects get added as more pages under `projects/`.
+Personal site — a publication of data-driven energy analysis (static HTML/CSS/JS,
+deployed on **GitHub Pages** at **[jfrahmadii.xyz](https://jfrahmadii.xyz)**), plus
+the full data project behind its first piece. New analyses get added as more pages
+under `projects/`.
 
 | Path | What it is |
 |---|---|
-| `index.html` | Portfolio home — intro, project grid, about |
-| `projects/ontario-grid-decarbonization.html` | First case study (the project documented below) |
+| `index.html` | Home — intro, writing feed, about |
+| `projects/ontario-grid-decarbonization.html` | First published analysis (the project documented below) |
 | `assets/css/site.css` | Site styles (light shell + dark dashboard panel) |
 | `assets/js/ontario-data.js` | **Generated** chart data (do not hand-edit) |
 | `assets/js/ontario-charts.js` | Chart.js rendering |

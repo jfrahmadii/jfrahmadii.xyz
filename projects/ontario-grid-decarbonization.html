@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Ontario's Grid: Clean, but Drifting — Jafar Ahmadi</title>
-<meta name="description" content="End-to-end analytics project: real hourly IESO generation data, an ETL to Parquet, a star-schema model, and dashboards tracking Ontario's electricity decarbonization. Emissions-free share has slipped from 93% to 80% as natural gas tripled." />
+<title>Ontario's Grid: Clean, but Drifting — Jeff Ahmadi</title>
+<meta name="description" content="Ontario runs one of North America's cleanest grids, yet its emissions-free share fell from 93% to 80% in five years as natural gas tripled. A data-driven analysis built from hourly IESO generation, with full method and sources." />
 <meta property="og:title" content="Ontario's Grid: Clean, but Drifting" />
 <meta property="og:description" content="Tracking Ontario's electricity decarbonization from raw IESO data to a decision-ready dashboard." />
 <meta property="og:type" content="article" />
@@ -21,12 +21,12 @@
   <div class="wrap">
     <a class="brand" href="../index.html">
       <span class="dot">J</span>
-      <span>jeff<span style="color:var(--accent-ink)">.</span>analytics</span>
+      <span>Jeff Ahmadi</span>
     </a>
     <nav class="nav-links">
-      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#writing">Writing</a>
       <a href="../index.html#about" class="hide-sm">About</a>
-      <a href="mailto:jfrahmadii@gmail.com">Contact</a>
+      <a href="https://www.linkedin.com/in/jeff-ahmadi-579932ba/" target="_blank" rel="noopener">LinkedIn</a>
     </nav>
   </div>
 </header>
@@ -34,19 +34,19 @@
 <!-- ============ PROJECT HERO ============ -->
 <section class="proj-hero">
   <div class="wrap">
-    <div class="breadcrumb"><a href="../index.html">Home</a> → <a href="../index.html#projects">Projects</a> → Ontario Grid Decarbonization</div>
-    <p class="eyebrow">Energy &amp; Sustainability · Data Analytics</p>
+    <div class="breadcrumb"><a href="../index.html">Home</a> → <a href="../index.html#writing">Writing</a> → Ontario's Grid</div>
+    <p class="eyebrow">Energy · Analysis</p>
     <h1>Ontario's Grid: Clean, but Drifting</h1>
     <p class="dek">
-      One of North America's cleanest electricity grids is quietly getting dirtier.
-      I built an end-to-end pipeline — real hourly IESO data to a decision-ready
-      dashboard — to measure exactly how much, and what's driving it.
+      Ontario runs one of North America's cleanest grids, and the usual line is that
+      it's basically decarbonized. The hourly generation data tells a less comfortable
+      story — and shows exactly where the "job done" narrative goes wrong.
     </p>
-    <div class="proj-meta">
-      <div class="item"><div class="k">Role</div><div class="v">Solo — end to end</div></div>
-      <div class="item"><div class="k">Stack</div><div class="v">Python · Power BI · Fabric</div></div>
-      <div class="item"><div class="k">Data</div><div class="v">IESO hourly, 2019–present</div></div>
-      <div class="item"><div class="k">Grain</div><div class="v">~85 months · 191 generators</div></div>
+    <div class="byline">
+      <span class="author">By Jeff Ahmadi</span><span class="sep">·</span>
+      <span>June 2026</span><span class="sep">·</span>
+      <span>7 min read</span><span class="sep">·</span>
+      <span>Source: IESO hourly generation, 2019–present</span>
     </div>
   </div>
 </section>
@@ -118,7 +118,7 @@
 <!-- ============ HOW I BUILT IT ============ -->
 <section class="block">
   <div class="wrap-narrow prose">
-    <h2>How I built it</h2>
+    <h2>How this was measured</h2>
     <p>
       The headline is only worth as much as the data behind it, so most of the work
       was upstream of the charts. The pipeline runs from the original publisher all
@@ -157,11 +157,11 @@ YoY Δ Renewable Share =
 <!-- ============ VALIDATION ============ -->
 <section class="block">
   <div class="wrap-narrow prose">
-    <h2>Validation &amp; rigour</h2>
+    <h2>Data quality &amp; reconciliation</h2>
     <p>
       Public CSVs are messy in ways that fail silently. Two real bugs only surfaced
-      because I validated the loader against an actual April-2025 file instead of
-      trusting that it "looked right":
+      because the loader was validated against an actual April-2025 file rather than
+      trusted because it "looked right":
     </p>
     <ul>
       <li><strong>Column shift.</strong> Data rows carry a trailing comma (29 fields) but the header has 28, so pandas promoted the first column to the index and shifted every field left by one — corrupting the whole table. Fixed with <code class="inline">index_col=False</code>.</li>
@@ -215,8 +215,18 @@ YoY Δ Renewable Share =
       <a href="https://www.canada.ca/en/environment-climate-change/services/climate-change/greenhouse-gas-emissions/inventory.html" target="_blank" rel="noopener">ECCC National Inventory Report</a>
     </p>
     <div class="cta" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:26px">
-      <a class="btn btn-primary" href="https://github.com/jfrahmadii/jfrahmadii.xyz" target="_blank" rel="noopener">View the code on GitHub →</a>
-      <a class="btn btn-ghost" href="../index.html#projects">← Back to projects</a>
+      <a class="btn btn-primary" href="https://github.com/jfrahmadii/jfrahmadii.xyz" target="_blank" rel="noopener">Data &amp; code on GitHub →</a>
+      <a class="btn btn-ghost" href="../index.html#writing">← Back to writing</a>
+    </div>
+
+    <div class="author-card" style="margin-top:34px">
+      <div class="ava">J</div>
+      <div class="who">
+        <h4>Jeff Ahmadi</h4>
+        <p>I write data-driven analysis of energy systems — how grids generate, emit and
+          decarbonize, read through primary data.
+          <a href="https://www.linkedin.com/in/jeff-ahmadi-579932ba/" target="_blank" rel="noopener">Connect on LinkedIn</a>.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -224,10 +234,11 @@ YoY Δ Renewable Share =
 <!-- ============ FOOTER ============ -->
 <footer class="footer">
   <div class="wrap">
-    <div>© <span id="year"></span> Jafar Ahmadi · Data from IESO, CER &amp; ECCC.</div>
+    <div>© <span id="year"></span> Jeff Ahmadi · Data from IESO, CER &amp; ECCC.</div>
     <div class="social">
-      <a href="mailto:jfrahmadii@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/jeff-ahmadi-579932ba/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://github.com/jfrahmadii" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:jfrahmadii@gmail.com">Email</a>
     </div>
   </div>
 </footer>
