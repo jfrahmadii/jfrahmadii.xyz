@@ -316,3 +316,28 @@ canvas { max-width: 100%; }
 .author-card .who p { margin: 0; font-size: 14.5px; color: var(--body); line-height: 1.55; }
 .author-card .who a { font-weight: 600; }
 @media (max-width: 540px) { .author-card { flex-direction: column; gap: 12px; } }
+
+/* =========================================================================
+   EMBEDDED DASHBOARDS (Tableau Public / external viz)
+   ========================================================================= */
+.viz-figure { margin: 8px 0 6px; }
+.viz-embed {
+  position: relative; width: 100%; border: 1px solid var(--line);
+  border-radius: 16px; overflow: hidden; background: #fff; box-shadow: var(--shadow-md);
+}
+/* Tableau Public dashboards are published at a fixed size (1600px wide). We let the
+   viz render at that native width (so Tableau lays out the COMPLETE dashboard) inside
+   .viz-scale, then shrink it to the column width with a JS-set `transform: scale()`
+   (see the fit script on each project page). `transform` is used rather than `zoom`
+   because zoom shrinks the iframe's own viewport and makes Tableau re-clip the fixed
+   layout, whereas transform scales the fully-rendered pixels. */
+.viz-embed .viz-scale { transform-origin: top left; width: max-content; }
+.viz-embed tableau-viz { display: block; border: 0; }
+.viz-embed .viz-fallback { display: block; width: 100%; height: auto; }
+.viz-cap { color: var(--muted); font-size: 13.5px; line-height: 1.6; margin: 12px 2px 0; }
+.viz-cap b { color: var(--ink); }
+.viz-actions { margin-top: 12px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* warm "civic / risk" card thumbnail (kept self-contained so it renders
+   regardless of .card vs .post nesting) */
+.thumb.civic { background: linear-gradient(135deg, #211019, #3a1c24); }
