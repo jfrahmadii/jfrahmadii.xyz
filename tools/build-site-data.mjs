@@ -5,7 +5,7 @@
  *
  *   node tools/build-site-data.mjs
  *
- * Reads  : Fact_Generation_ON_annual.csv, Fact_Generation_ON_monthly.csv
+ * Reads  : analysis/ontario-grid/Fact_Generation_ON_{annual,monthly}.csv
  * Writes : assets/js/ontario-data.js  (window.ONTARIO_DATA = {...})
  *
  * "Emissions-free %" follows the dashboard's definition: all generation except
@@ -16,6 +16,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const DATA = resolve(ROOT, "analysis/ontario-grid");
 const FUELS = ["NUC", "HYD", "WND", "SOL", "BIO", "GAS", "OTH"];
 const EMITTING = new Set(["GAS", "OTH"]);
 const round1 = (n) => Math.round(n * 10) / 10;
@@ -57,8 +58,8 @@ function pivot(rows, keyOf) {
   return { keys, series, total, cleanPct };
 }
 
-const annualRows = parseCsv(readFileSync(resolve(ROOT, "Fact_Generation_ON_annual.csv"), "utf8"));
-const monthlyRows = parseCsv(readFileSync(resolve(ROOT, "Fact_Generation_ON_monthly.csv"), "utf8"));
+const annualRows = parseCsv(readFileSync(resolve(DATA, "Fact_Generation_ON_annual.csv"), "utf8"));
+const monthlyRows = parseCsv(readFileSync(resolve(DATA, "Fact_Generation_ON_monthly.csv"), "utf8"));
 
 const annual = pivot(annualRows, (r) => r.Year);
 const monthly = pivot(monthlyRows, (r) => `${r.Year}-${String(r.Month).padStart(2, "0")}`);

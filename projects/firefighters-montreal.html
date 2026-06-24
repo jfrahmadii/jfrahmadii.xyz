@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Where Montreal's Road Emergencies Strain the Fire Service — Jeff Ahmadi</title>
+<meta name="description" content="Predicting which Montreal boroughs strain the fire service for road emergencies. A borough-month model built from 2012–2021 SIM intervention and SPVM collision open data, with two interactive Tableau dashboards." />
+<meta property="og:title" content="Where Montreal's Road Emergencies Strain the Fire Service" />
+<meta property="og:description" content="A data-driven look at high-risk car-accident zones for the Montreal Fire Department — from open data to a borough-level risk model." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://jfrahmadii.xyz/projects/firefighters-montreal.html" />
+<link rel="canonical" href="https://jfrahmadii.xyz/projects/firefighters-montreal.html" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d9488'/%3E%3Cpath d='M18 6l-9 12h6l-2 8 9-12h-6z' fill='white'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="../assets/css/site.css" />
+<!-- Tableau Embedding API v3 (responsive web component) -->
+<script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span class="dot">J</span>
+      <span>Jeff Ahmadi</span>
+    </a>
+    <nav class="nav-links">
+      <a href="../index.html#writing">Writing</a>
+      <a href="../index.html#about" class="hide-sm">About</a>
+      <a href="https://www.linkedin.com/in/jeff-ahmadi-579932ba/" target="_blank" rel="noopener">LinkedIn</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ PROJECT HERO ============ -->
+<section class="proj-hero">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="../index.html">Home</a> → <a href="../index.html#writing">Writing</a> → Montreal road emergencies</div>
+    <p class="eyebrow">Urban Safety · Machine Learning</p>
+    <h1>Where Montreal's Road Emergencies Strain the Fire Service</h1>
+    <p class="dek">
+      Firefighters answer far more than fires — extrications, hazmat, EV battery
+      incidents. Using a decade of Montreal open data, I built a borough-level model
+      to find where road accidents pull the fire service hardest, and what those
+      hotspots have in common.
+    </p>
+    <div class="byline">
+      <span class="author">By Jeff Ahmadi</span><span class="sep">·</span>
+      <span>June 2026</span><span class="sep">·</span>
+      <span>8 min read</span><span class="sep">·</span>
+      <span>Source: Montréal open data (SIM &amp; SPVM), 2012–2021</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OVERVIEW ============ -->
+<section class="block">
+  <div class="wrap-narrow prose">
+    <h2>The question</h2>
+    <p class="lead-in">
+      The Service de sécurité incendie de Montréal (SIM) sends crews to road
+      emergencies, not just fires. If you could predict <em>which</em> areas and
+      <em>which</em> months put the heaviest load on the service, you could pre-position
+      resources and target prevention. So: can open data tell us where — and why?
+    </p>
+    <div class="callout accent">
+      <b>The story in five seconds:</b> Across 2012–2021, the boroughs that strain
+      SIM most are not where the weather or road surface is worst — they're where the
+      <b>intersections</b> are. The model's strongest signals are intersections in
+      <b>commercial zones</b>, under <b>clear, daylight</b> conditions — pointing at
+      road <i>design</i>, not driving conditions, as the lever worth pulling.
+    </div>
+  </div>
+</section>
+
+<!-- ============ DASHBOARD 1 (centerpiece) ============ -->
+<section class="block" style="padding-top:8px">
+  <div class="wrap">
+    <p class="eyebrow">Interactive · Tableau Public</p>
+    <h2 style="font-size:clamp(22px,3vw,28px);margin:0 0 4px">High-risk intervention zones</h2>
+    <p class="viz-cap" style="margin:0 0 16px">
+      Borough-level view of where firefighter interventions for vehicle incidents
+      concentrate, and how risk shifts across the year. Use the filters and hover for
+      detail; full-screen and download are in the toolbar.
+    </p>
+    <figure class="viz-figure">
+      <div class="viz-embed" data-viz-w="1600" data-viz-h="927">
+        <div class="viz-scale">
+          <tableau-viz
+            src="https://public.tableau.com/views/BoroughInterventions/MainPage"
+            width="1600" height="927" toolbar="bottom" hide-tabs>
+          </tableau-viz>
+        </div>
+        <noscript>
+          <a href="https://public.tableau.com/views/BoroughInterventions/MainPage" target="_blank" rel="noopener">
+            <img class="viz-fallback"
+                 src="https://public.tableau.com/static/images/Bo/BoroughInterventions/MainPage/1.png"
+                 alt="Montreal borough firefighter-intervention risk dashboard — open the interactive version on Tableau Public" />
+          </a>
+        </noscript>
+      </div>
+      <figcaption class="viz-cap">
+        <b>Figure 1.</b> Firefighter interventions for vehicle-related incidents,
+        aggregated by borough and month, 2012–2021.
+      </figcaption>
+    </figure>
+    <div class="viz-actions">
+      <a class="btn btn-ghost" href="https://public.tableau.com/views/BoroughInterventions/MainPage" target="_blank" rel="noopener">Open in Tableau Public ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WAS BUILT ============ -->
+<section class="block">
+  <div class="wrap-narrow prose">
+    <h2>How this was built</h2>
+    <p>
+      Two public datasets carry the analysis: SIM's record of every firefighter
+      intervention, and the SPVM's record of every reported road collision. The catch
+      is that they don't share a key — and the intervention coordinates are
+      deliberately obfuscated for privacy, so you can't join an accident to the crew
+      that responded to it. The whole method is built around getting past that.
+    </p>
+
+    <div class="pipeline">
+      <div class="step"><div class="n">1</div><h4>Consolidate &amp; filter</h4><p>Merge SIM's 2005–2014 and 2015–2022 files, trim to 2012–2021, and keep only the 25 vehicle-related incident types (extrication, vehicle fire, hazmat, etc.). Standardize borough names.</p></div>
+      <div class="step"><div class="n">2</div><h4>Aggregate to a shared grain</h4><p>With coordinates obfuscated, a row-level join is impossible. So both datasets are rolled up to <b>borough × year-month</b> — a spatial-temporal cell that <i>does</i> exist in both, and becomes the unit of analysis.</p></div>
+      <div class="step"><div class="n">3</div><h4>Define the target</h4><p>Sum the units deployed per cell into a <code class="inline">firefighter_risk_score</code>, then flag the top quartile (75th percentile) as <b>high-risk</b> — a clean binary the model can predict.</p></div>
+      <div class="step"><div class="n">4</div><h4>Model &amp; visualize</h4><p>Train Random Forest, LightGBM and XGBoost to predict high-risk cells from accident attributes; surface the drivers in Tableau.</p></div>
+    </div>
+
+    <h3>Turning "missing" into signal</h3>
+    <p>
+      Collision records are full of blanks — surface, lighting, and configuration
+      fields are often unrecorded. Instead of imputing or dropping them, every
+      categorical level (including "unknown") becomes its own dummy column when the
+      data is aggregated to the borough-month grain. Missingness stops being a problem
+      to patch and becomes a feature the model can weigh on its own — no rows thrown
+      away, no values invented. (A dedicated
+      <a href="https://github.com/jfrahmadii/firefighters-interventions/blob/main/Missingness_Collisions_Road.ipynb" target="_blank" rel="noopener">missingness notebook</a>
+      documents the analysis behind that choice.)
+    </p>
+
+    <h3>Keeping the two sides separate</h3>
+    <p>
+      Because the target is built from SIM deployment, the features are drawn only
+      from the <em>collision</em> record — road geometry, zone type, lighting, weather,
+      lane configuration. Nothing derived from the interventions themselves feeds the
+      model, so it isn't quietly predicting interventions from interventions.
+    </p>
+  </div>
+</section>
+
+<!-- ============ DASHBOARD 2 ============ -->
+<section class="block" style="padding-top:8px">
+  <div class="wrap">
+    <p class="eyebrow">Interactive · Tableau Public</p>
+    <h2 style="font-size:clamp(22px,3vw,28px);margin:0 0 4px">A closer look: collisions at intersections</h2>
+    <p class="viz-cap" style="margin:0 0 16px">
+      The model kept pointing at intersections, so this second dashboard drills into
+      intersection collisions by borough — the structural pattern behind the risk.
+    </p>
+    <figure class="viz-figure">
+      <div class="viz-embed" data-viz-w="1600" data-viz-h="927">
+        <div class="viz-scale">
+          <tableau-viz
+            src="https://public.tableau.com/views/collision_intersections_borough/MainPage"
+            width="1600" height="927" toolbar="bottom" hide-tabs>
+          </tableau-viz>
+        </div>
+        <noscript>
+          <a href="https://public.tableau.com/views/collision_intersections_borough/MainPage" target="_blank" rel="noopener">
+            <img class="viz-fallback"
+                 src="https://public.tableau.com/static/images/co/collision_intersections_borough/MainPage/1.png"
+                 alt="Montreal intersection-collision analysis by borough — open the interactive version on Tableau Public" />
+          </a>
+        </noscript>
+      </div>
+      <figcaption class="viz-cap">
+        <b>Figure 2.</b> Intersection collisions by borough — the geometry behind the
+        high-strain zones in Figure 1.
+      </figcaption>
+    </figure>
+    <div class="viz-actions">
+      <a class="btn btn-ghost" href="https://public.tableau.com/views/collision_intersections_borough/MainPage" target="_blank" rel="noopener">Open in Tableau Public ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINDINGS ============ -->
+<section class="block">
+  <div class="wrap-narrow prose">
+    <h2>What the data shows</h2>
+    <p>
+      Two patterns stand out. Seasonally, <b>winter</b> brings more
+      material-damage accidents, but the more <b>severe</b> events — the ones that pull
+      more crews — cluster in <b>summer and fall</b>. Spatially, interventions are far
+      from evenly spread: a handful of boroughs carry a disproportionate share.
+    </p>
+    <p>
+      When the model is asked what separates high-strain cells from the rest, the
+      features that matter most are strikingly structural:
+    </p>
+    <ul>
+      <li><strong>Intersections</strong> — the single strongest signal</li>
+      <li><strong>Commercial zones</strong>, and to a lesser extent <strong>industrial zones</strong></li>
+      <li><strong>Daylight</strong> and <strong>clear weather</strong></li>
+      <li><strong>Lane characteristics</strong> (configuration / count)</li>
+    </ul>
+    <div class="callout">
+      <b>The counter-intuitive part:</b> the heaviest load doesn't track bad weather or
+      poor surfaces. It shows up under <i>good</i> conditions — clear, daylit
+      intersections in commercial areas. That points away from "drivers behaving badly
+      in bad conditions" and toward the <b>geometry, traffic flow, and signal timing of
+      the intersections themselves</b> as the thing worth fixing.
+    </div>
+    <p>
+      The practical read for SIM and city planners: a targeted engineering review of
+      high-risk commercial intersections — signal timing, lane configuration,
+      pedestrian protection — is a more promising lever than weather-driven measures
+      for reducing the severe accidents that strain the fire service.
+    </p>
+  </div>
+</section>
+
+<!-- ============ HOW FAR THE CLAIMS GO ============ -->
+<section class="block">
+  <div class="wrap-narrow prose">
+    <h2>How far the claims go</h2>
+    <p>
+      An honest model is clear about its own edges. Three matter here:
+    </p>
+    <ul>
+      <li><strong>Predictive, not causal.</strong> Feature importance says intersections
+        <em>predict</em> high strain; it doesn't prove they <em>cause</em> it. The
+        engineering-review recommendation is a strong hypothesis to test on the ground,
+        not a settled finding — and importances are best read alongside SHAP or
+        permutation checks rather than raw split counts.</li>
+      <li><strong>Borough is a coarse lens.</strong> With ~19 boroughs, "review the
+        intersections" is directional, not a worksite list. Pinpointing specific
+        intersections needs finer geography than a privacy-obfuscated feed allows.</li>
+      <li><strong>Validation should respect time.</strong> This is a borough-month panel,
+        so the most defensible next step is a time-based split (train on earlier years,
+        test on later) rather than a random one — closer to how SIM would actually use a
+        forecast.</li>
+    </ul>
+    <h3>Where it goes next</h3>
+    <p>
+      The highest-value extension is an approximate spatial linkage that relates
+      individual accidents to interventions, lifting the analysis from borough-level to
+      something closer to intersection-level. Adding weather, traffic-volume and
+      intersection-geometry data — and predicting the deployment <em>score</em> directly
+      rather than a binary flag — would sharpen it further.
+    </p>
+  </div>
+</section>
+
+<!-- ============ SCOPE & SOURCES ============ -->
+<section class="block">
+  <div class="wrap-narrow prose">
+    <h2>Scope &amp; sources</h2>
+    <p class="sources">
+      <strong style="color:var(--ink)">Method:</strong> SIM firefighter interventions
+      (filtered to 25 vehicle-related incident types) and SPVM road collisions, both
+      from the Ville de Montréal open-data portal, 2012–2021. Both datasets aggregated
+      to a borough × year-month grain; binary high-risk target at the 75th percentile of
+      units deployed; Random Forest / LightGBM / XGBoost compared with an emphasis on
+      recall (missing a high-risk zone is the costly error).
+      <br /><br />
+      <strong style="color:var(--ink)">Sources:</strong>
+      <a href="https://donnees.montreal.ca/dataset/interventions-service-securite-incendie-montreal" target="_blank" rel="noopener">SIM interventions (Montréal open data)</a> ·
+      <a href="https://donnees.montreal.ca/dataset/collisions-routieres" target="_blank" rel="noopener">SPVM road collisions</a> ·
+      <a href="https://donnees.montreal.ca/dataset/cd722e22-376b-4b89-9bc2-7c7ab317ef6b/resource/f69c656e-9c0c-4763-bb5b-33e5ca46713c/download/rapports-accident-documentation.pdf" target="_blank" rel="noopener">Collision field documentation (PDF)</a>
+    </p>
+    <div class="cta" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:26px">
+      <a class="btn btn-primary" href="https://github.com/jfrahmadii/firefighters-interventions" target="_blank" rel="noopener">Code &amp; notebooks on GitHub →</a>
+      <a class="btn btn-ghost" href="../index.html#writing">← Back to writing</a>
+    </div>
+
+    <div class="author-card" style="margin-top:34px">
+      <div class="ava">J</div>
+      <div class="who">
+        <h4>Jeff Ahmadi</h4>
+        <p>I write data-driven analysis — energy systems, public-safety and the city,
+          read through primary data.
+          <a href="https://www.linkedin.com/in/jeff-ahmadi-579932ba/" target="_blank" rel="noopener">Connect on LinkedIn</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <div>© <span id="year"></span> Jeff Ahmadi · Data from Ville de Montréal (SIM &amp; SPVM).</div>
+    <div class="social">
+      <a href="https://www.linkedin.com/in/jeff-ahmadi-579932ba/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/jfrahmadii" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:jfrahmadii@gmail.com">Email</a>
+    </div>
+  </div>
+</footer>
+
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+<!-- Scale each fixed-size Tableau dashboard to fit its column width -->
+<script>
+(function () {
+  function fit(embed) {
+    var inner = embed.querySelector('.viz-scale');
+    if (!inner) return;
+    // Native published dashboard size; scale the fully-rendered viz to the column.
+    var natW = parseFloat(embed.dataset.vizW) || 1600;
+    var natH = parseFloat(embed.dataset.vizH) || 927;
+    var scale = embed.clientWidth / natW;
+    inner.style.transform = 'scale(' + scale + ')';
+    embed.style.height = (natH * scale) + 'px';
+    // A CSS transform on a cross-origin iframe's ancestor can leave it blank until a
+    // repaint — nudge one on the next frame.
+    requestAnimationFrame(function () { void inner.offsetHeight; });
+  }
+  function fitAll() {
+    document.querySelectorAll('.viz-embed').forEach(fit);
+  }
+  // The <tableau-viz> component fires 'firstinteractive' once the viz is live.
+  document.querySelectorAll('tableau-viz').forEach(function (v) {
+    v.addEventListener('firstinteractive', function () {
+      var e = v.closest('.viz-embed');
+      fit(e);
+      // re-fit shortly after to force the iframe to paint at the new scale
+      setTimeout(function () { fit(e); window.dispatchEvent(new Event('resize')); }, 150);
+    });
+  });
+  window.addEventListener('resize', fitAll);
+  fitAll();
+  [400, 1200, 2500, 5000].forEach(function (t) { setTimeout(fitAll, t); });
+})();
+</script>
+</body>
+</html>
